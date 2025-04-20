@@ -3,7 +3,6 @@ from sqlmodel import SQLModel, Field
 
 class PlayerBase(SQLModel):
     name: str
-    events: str
 
 class PlayerIn(PlayerBase):
     pass

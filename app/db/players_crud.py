@@ -8,16 +8,16 @@ players = [
     {"id": 2, "name": "Pelaaja 3"},
 ]
 
-def create_player(session: Session, player_in: PlayerIn, player_id: int):
-    s = PlayerDb.model_validate(player_in, player_id)
+def create_player(session: Session, player_in: PlayerIn):
+    s = PlayerDb.model_validate(player_in)
     session.add(s)
     session.commit()
     session.refresh(s)
-    if not s:
-        raise HTTPException(detail = f"Player {player_id} couldn't be created.", status_code = status.HTTP_422_UNPROCESSABLE_ENTITY)
     return s
 
-def get_players(session: Session):
+def get_players(session: Session, name: str = ""):
+    if name != "":
+        return session.exec(select(PlayerDb).where(PlayerDb.name == name)).all()
     return session.exec(select(PlayerDb)).all()
 
 def get_player_by_id(session: Session, player_id: int):
