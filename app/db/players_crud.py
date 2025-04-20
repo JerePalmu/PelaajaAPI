@@ -24,3 +24,4 @@ def get_player_by_id(session: Session, player_id: int):
     s = session.get(PlayerDb, player_id)
     if not s:
         raise HTTPException(detail = f"Player {player_id} not found.", status_code = status.HTTP_404_NOT_FOUND)
+    return s
