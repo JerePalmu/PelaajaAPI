@@ -2,12 +2,6 @@ from fastapi import status, HTTPException
 from .models import PlayerIn, PlayerDb
 from sqlmodel import Session, select
 
-players = [
-    {"id": 0, "name": "Pelaaja 1"},
-    {"id": 1, "name": "Pelaaja 2"},
-    {"id": 2, "name": "Pelaaja 3"},
-]
-
 def create_player(session: Session, player_in: PlayerIn):
     s = PlayerDb.model_validate(player_in)
     session.add(s)
