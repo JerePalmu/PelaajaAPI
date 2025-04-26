@@ -11,7 +11,7 @@ class PlayerIn(PlayerBase):
 
 class PlayerDb(PlayerBase, table = True):
     id: int = Field(default = None, primary_key = True)
-    events: List["EventDb"] = Relationship(back_populates="player")
+    events: List["EventDb"] = Relationship(back_populates = "player")
 
 class EventBase(SQLModel):
     type: str
@@ -20,9 +20,8 @@ class EventBase(SQLModel):
 class EventIn(EventBase):
     pass
 
-class EventDb(EventBase, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    timestamp: datetime = Field(default_factory=datetime.now)
-    player_id: int = Field(foreign_key="playerdb.id")
-    
-    player: Optional[PlayerDb] = Relationship(back_populates="events")
+class EventDb(EventBase, table = True):
+    id: int = Field(default = None, primary_key = True)
+    timestamp: datetime = Field(default_factory = datetime.now)
+    player_id: int = Field(foreign_key = "playerdb.id")
+    player: Optional[PlayerDb] = Relationship(back_populates = "events")
