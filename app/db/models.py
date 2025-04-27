@@ -21,7 +21,7 @@ class EventIn(EventBase):
     pass
 
 class EventDb(EventBase, table = True):
-    id: int = Field(default = None, primary_key = True)
-    timestamp: datetime = Field(default_factory = datetime.now)
+    id: Optional[int] = Field(default = None, primary_key = True)
+    timestamp: datetime
     player_id: int = Field(foreign_key = "playerdb.id")
-    player: Optional[PlayerDb] = Relationship(back_populates = "events")
+    player: PlayerDb = Relationship(back_populates = "events")

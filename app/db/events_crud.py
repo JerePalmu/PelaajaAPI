@@ -1,5 +1,5 @@
 from fastapi import HTTPException, status
-from .models import EventIn, EventDb
+from .models import EventIn, EventDb, PlayerDb
 from sqlmodel import Session, select
 from datetime import datetime
 
@@ -15,10 +15,13 @@ def get_events_by_player_id(session: Session, player_id: int, event_type: str = 
     return events
 
 def create_event(session: Session, player_id: int, event_in: EventIn):
+    player = session.get(PlayerDb, player_id)
+    if not player:
+        raise HTTPException(detail = f"Player {player_id} not found.", status_code = status.HTTP_404_NOT_FOUND)
     if event_in.type not in EVENT_TYPES:
         raise HTTPException(detail = "Invalid event type.", status_code = status.HTTP_400_BAD_REQUEST)
 
-    e = EventDb(player_id = player_id, timestamp = datetime.now())
+    e = EventDb(**event_in.dict(), timestamp = datetime.now(), player_id = player_id)
     session.add(e)
     session.commit()
     session.refresh(e)
