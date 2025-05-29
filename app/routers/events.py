@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, Query
 from ..db.models import EventIn, EventDb
 from ..db import events_crud
 from ..db.database import get_session
@@ -11,10 +11,10 @@ router = APIRouter()
 def get_events_for_player(player_id: int, type: Optional[str] = None, session: Session = Depends(get_session)):
     return events_crud.get_events_by_player_id(session, player_id, type)
 
-@router.post("/{player_id}/events", response_model = EventDb, status_code = status.HTTP_201_CREATED)
+@router.post("/players/{id}/events", response_model = EventDb, status_code = status.HTTP_201_CREATED)
 def create_event(player_id: int, event_in: EventIn, session: Session = Depends(get_session)):
     return events_crud.create_event(session, player_id, event_in)
 
 @router.get("/events", response_model = list[EventDb])
-def get_all_events(type: Optional[str] = None, session: Session = Depends(get_session)):
+def get_all_events(type: Optional[str] = Query(None), session: Session = Depends(get_session)):
     return events_crud.get_all_events(session, type)

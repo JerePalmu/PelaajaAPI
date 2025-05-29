@@ -2,6 +2,7 @@ from fastapi import HTTPException, status
 from .models import EventIn, EventDb, PlayerDb
 from sqlmodel import Session, select
 from datetime import datetime
+from typing import Optional
 
 EVENT_TYPES = {"level_started", "level_solved"}
 
@@ -27,11 +28,9 @@ def create_event(session: Session, player_id: int, event_in: EventIn):
     session.refresh(e)
     return e
 
-def get_all_events(session: Session, event_type: str = None):
-    query = select(EventDb)
-    if event_type:
-        query = query.where(EventDb.type == event_type)
-    events = session.exec(query).all()
-    if event_type not in EVENT_TYPES:
-        raise HTTPException(detail = "Invalid event type.", status_code = status.HTTP_400_BAD_REQUEST)
-    return events
+def get_all_events(session: Session, type: Optional[str] = None):
+    if type:
+        if type not in EVENT_TYPES:
+            raise HTTPException(detail = "Invalid event type.", status_code = status.HTTP_400_BAD_REQUEST)
+        return session.exec(select(EventDb).where(EventDb.type == type)).all()
+    return session.exec(select(EventDb)).all()
