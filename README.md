@@ -1,5 +1,8 @@
 # PelaajaAPI
 
+## Korjattu 29.5.2025
+Kaikkia eventtejä haettaessa tyyppi ei ole enää pakollinen ja lisäyksen polku korjattu.
+
 ## Tietoa
 PelaajaAPI:ssa pystyy lisäämään pelaajia, etsimään pelaajia, lisätä eventtejä (eli levelien seurantaa), sekä seurata pelaajien etenemistä leveleissä.
 
